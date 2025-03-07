@@ -786,26 +786,26 @@
         // Aceitar restaurante
         function acceptRestaurant() {
             // Preparar mensagem para WhatsApp
-            const message = `Oi amor, escolhi o restaurante ${currentRestaurant.name} para nosso encontro, veja no mapa o restaurante "${currentRestaurant.name}" ${currentRestaurant.url}`;
+            const message = `Oi amor, escolhi um restaurante da sua lista para aproveitarmos juntos! 💓\n\n🍽️ *Nome do restaurante:* ${currentRestaurant.name}\n📍 *Localização:* ${currentRestaurant.url}\n\nEstou ansiosa para sair com você, meu gatinho! 😘`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappLink = `https://wa.me/5548984613946?text=${encodedMessage}`;
 
             // Limpar ações do modal
             modalActions.innerHTML = '';
-            
+
             // Adicionar mensagem de sucesso e botão do maps
             const successMessage = document.createElement('div');
             successMessage.className = 'success-message';
             successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Ótima escolha!`;
             modalActions.appendChild(successMessage);
-            
+
             const mapButton = document.createElement('a');
             mapButton.href = currentRestaurant.url;
             mapButton.target = '_blank';
             mapButton.className = 'button button-secondary button-link';
             mapButton.innerHTML = '<i class="fas fa-map-marker-alt"></i> Ver no Google Maps';
             modalActions.appendChild(mapButton);
-            
+
             // Abrir WhatsApp automaticamente
             window.open(whatsappLink, '_blank');
         }
