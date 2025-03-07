@@ -664,30 +664,92 @@
         const restaurants = [
             {
                 name: "Blackpot Restaurant",
+                description: "Conhecido por sua culinária autêntica e ambiente acolhedor. Um excelente lugar para apreciar pratos elaborados e compartilhar momentos especiais.",
                 mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14555.94245930117!2d-48.60377168998433!3d-27.612406748231987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95273816195b3fe7%3A0xa51af3a95b173aa0!2sBlackpot%20Restaurant!5e0!3m2!1spt-BR!2sbr!4v1741356442805!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
                 url: "https://maps.app.goo.gl/TN4ipZTHUp2isDAo8",
                 color: "#FF5252",
-                icon: "fa-utensils",
-                angle: 90 // Cada seção terá um ângulo específico
+                icon: "fa-utensils"
             },
             {
                 name: "Osli Restaurante",
+                description: "Elegante restaurante com decoração refinada e menu que valoriza os sabores locais. Perfeito para uma noite romântica com pratos cuidadosamente preparados.",
                 mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.208911226234!2d-48.553954524633056!3d-27.587052021716403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9527393d97d1762d%3A0xc59b919a85bfcc8c!2sOsli%20Restaurante!5e0!3m2!1spt-BR!2sbr!4v1741356463493!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
                 url: "https://maps.app.goo.gl/3Vzoha8WXihr5vh28",
                 color: "#536DFE",
-                icon: "fa-wine-glass-alt",
-                angle: 90
+                icon: "fa-wine-glass-alt"
+            },
+            {
+                name: "Bistrô da Praça",
+                description: "Um charmoso bistrô com ambiente intimista e cardápio sazonal. Ótimo para degustar pratos delicados acompanhados de um bom vinho em um ambiente descontraído.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.1464998671427!2d-48.548460824633125!3d-27.588987321799163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9527383d8788227f%3A0x36eb1a225e36b86b!2zQmlzdHLDtCBkYSBQcmHDp2E!5e0!3m2!1spt-BR!2sbr!4v1741356476501!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/rhnnUmHoeHbLKDK56",
+                color: "#9C27B0",
+                icon: "fa-coffee"
+            },
+            {
+                name: "Santa Cucina",
+                description: "Autêntica culinária italiana em um ambiente que remete à Itália. Experimente as massas artesanais e os risotos cremosos preparados com ingredientes frescos e de qualidade.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.1464998671427!2d-48.548460824633125!3d-27.588987321799163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952738198f442d33%3A0x2e5aa253187223ed!2sG%C3%81LIA%20RESTAURANTE!5e0!3m2!1spt-BR!2sbr!4v1741356487276!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/tYnKKBHuyM4VFfVE7",
+                color: "#8BC34A",
+                icon: "fa-pizza-slice"
+            },
+            {
+                name: "Píer 54 Restaurante",
+                description: "Localizado em um ponto privilegiado, oferece uma experiência gastronômica com vista. Especializado em frutos do mar frescos e pratos contemporâneos.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2291465652456!2d-48.55305112463308!3d-27.586424521689484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952737f61d6cad93%3A0x4794b9616eb83760!2sP%C3%ADer%2054%20Restaurante!5e0!3m2!1spt-BR!2sbr!4v1741356496643!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/Bt5EtFM1Zg2yimZ49",
+                color: "#009688",
+                icon: "fa-fish"
+            },
+            {
+                name: "Forneria Catarina São José",
+                description: "Pizzaria artesanal com forno à lenha que traz o verdadeiro sabor da pizza italiana. Ambiente agradável e pizzas preparadas com ingredientes selecionados.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.7718469784554!2d-48.61371712463258!3d-27.600602222296292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952737f4ef61e571%3A0x5ec3be8e68653cd7!2sForneria%20Catarina%20S%C3%A3o%20Jos%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1741356506549!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/37NqpVTbS4xNUaYq7",
+                color: "#FF9800",
+                icon: "fa-pizza-slice"
+            },
+            {
+                name: "El Señor Asador de Brasa",
+                description: "Autêntica parrilla com os melhores cortes de carne preparados na brasa. Ambiente rústico e aconchegante para uma refeição memorável com muito sabor.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2385465824295!2d-48.55021022463315!3d-27.586133021677004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9527397e5fb01c83%3A0x42c5ae94f40e7675!2sEl%20Se%C3%B1or%20Asador%20de%20Brasa!5e0!3m2!1spt-BR!2sbr!4v1741356531078!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/XATMJQ12Aw8ERGWf9",
+                color: "#795548",
+                icon: "fa-drumstick-bite"
+            },
+            {
+                name: "Outback Steakhouse",
+                description: "Famosa steakhouse australiana conhecida por seus cortes generosos e pelo característico Bloomin' Onion. Ambiente animado e pratos saborosos para uma experiência diferente.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8408.31663177688!2d-48.65085092598623!3d-27.616423085544216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952735cdaa28ffbd%3A0x4cb5f70eb5cab7c6!2sRestaurante%20Outback%20Steakhouse!5e0!3m2!1spt-BR!2sbr!4v1741356562454!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/HkYooddBJ4q3NpKE6",
+                color: "#FF5722",
+                icon: "fa-drumstick-bite"
+            },
+            {
+                name: "Little Carbone",
+                description: "Especializado em carnes premium preparadas no carvão. Atmosfera moderna e sofisticada com menu que valoriza ingredientes de qualidade e técnicas precisas de preparo.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3537.288237389849!2d-48.50166782463456!3d-27.55356362028453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952739cd7fb7d557%3A0x2f6b2d5be9c363c9!2sLittle%20Carbone!5e0!3m2!1spt-BR!2sbr!4v1741356579902!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/UuAxSuYcdNP6oMDq6",
+                color: "#607D8B",
+                icon: "fa-fire"
+            },
+            {
+                name: "Dom Piero Churrasco, Galeto e Massas",
+                description: "Um restaurante versátil que une o melhor do churrasco, do galeto e da culinária italiana. Ideal para quem deseja variedade em um ambiente familiar e acolhedor.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2564047505884!2d-48.61621222463328!3d-27.58557922165344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952749dca8f53979%3A0xad093208e611a4fa!2sDom%20Piero%20Churrasco%2C%20Galeto%20e%20Massas!5e0!3m2!1spt-BR!2sbr!4v1741356593244!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/JKgCFTmnPvvc4sx18",
+                color: "#673AB7",
+                icon: "fa-utensils"
+            },
+            {
+                name: "Santo Antonio de Lisboa",
+                description: "Localizado em um charmoso bairro histórico, oferece uma experiência única com vista para o mar e pratos que valorizam os ingredientes e a cultura local.",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2564047505884!2d-48.61621222463328!3d-27.58557922165344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95274692c1cfaca5%3A0x9893a62751be06a5!2sSanto%20Antonio%20de%20Lisboa%2C%20Florian%C3%B3polis%20-%20SC!5e0!3m2!1spt-BR!2sbr!4v1741356604109!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/qE4dqn3R4GR8j3TY6",
+                color: "#3F51B5",
+                icon: "fa-utensils"
             }
-            // Adicione mais restaurantes seguindo o mesmo formato
-            // Exemplo:
-            // {
-            //     name: "Nome do Restaurante",
-            //     mapEmbed: '<iframe src="LINK_DO_EMBED_DO_GOOGLE_MAPS" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
-            //     url: "LINK_DO_GOOGLE_MAPS",
-            //     color: "#HEX_COLOR",
-            //     icon: "ICONE_FONTAWESOME",
-            //     angle: 90 // Ajuste o ângulo conforme necessário
-            // }
         ];
 
         // Calcular ângulos totais
