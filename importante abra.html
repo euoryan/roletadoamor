@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta do Date Especial</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --primary-dark: #e95f5f;
+            --secondary: #2c3e50;
+            --accent: #ff8e8e;
+            --text: #3a3a3a;
+            --light: #f8f9fa;
+            --bg: #fdfdfd;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            overflow-x: hidden;
+            padding: 1rem;
+        }
+        
+        /* Preload font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem auto;
+            background-color: var(--bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background-image: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 1rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10.5%);
+            background-size: 20px 20px;
+            transform: rotate(30deg);
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 2rem;
+            position: relative;
+        }
+        
+        /* Wheel Container & Design */
+        .wheel-container {
+            width: 320px;
+            height: 320px;
+            position: relative;
+            margin: 0 auto 2.5rem;
+        }
+        
+        .wheel-outer-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .wheel-inner-ring {
+            width: 94%;
+            height: 94%;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .wheel {
+            width: 90%;
+            height: 90%;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            transform: rotate(0deg);
+        }
+        
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 0;
+            right: 0;
+            transform-origin: 0% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .section-inner {
+            transform: rotate(45deg);
+            width: 100%;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            padding: 0 40px 0 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .section-inner i {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        
+        .section-name {
+            font-size: 13px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .wheel-center {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            z-index: 5;
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+        }
+        
+        .wheel-pointer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+        }
+        
+        /* Result Section */
+        .result-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-top: 1rem;
+            gap: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .result-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .restaurant-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .restaurant-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .restaurant-header i {
+            font-size: 1.4rem;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Buttons & Controls */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            padding: 0.8rem 1.6rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .button-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-primary:active {
+            transform: translateY(-1px);
+        }
+        
+        .button-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .button-secondary:hover {
+            background-color: #1e2a36;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-secondary:active {
+            transform: translateY(-1px);
+        }
+        
+        .button-link {
+            text-decoration: none;
+            display: inline-flex;
+            justify-content: center;
+        }
+        
+        .button:disabled {
+            background-color: #e0e0e0;
+            color: #9e9e9e;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .spins-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+        
+        .spin-token {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .spin-token.used {
+            background-color: #e0e0e0;
+        }
+        
+        /* Animations & Decorations */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(1000px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Success message */
+        .success-message {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            color: #2e7d32;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        /* Responsiveness */
+        @media (min-width: 768px) {
+            .result-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .wheel-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .content {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .wheel-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1>Date Especial</h1>
+            <p>Gire a roleta e descubra onde será nosso jantar romântico. Você tem 3 giros para escolher o local perfeito!</p>
+        </div>
+        
+        <div class="content">
+            <div class="wheel-container">
+                <div class="wheel-outer-ring">
+                    <div class="wheel-inner-ring">
+                        <div class="wheel" id="wheel">
+                            <!-- Sections will be added via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="wheel-center">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="wheel-pointer"></div>
+            </div>
+            
+            <div class="button-container">
+                <button id="spinBtn" class="button button-primary">
+                    <i class="fas fa-sync-alt"></i>
+                    Girar a Roleta
+                </button>
+                <button id="acceptBtn" class="button button-primary" style="display: none;">
+                    <i class="fas fa-check"></i>
+                    Escolher Este Restaurante
+                </button>
+                <button id="rejectBtn" class="button button-secondary" style="display: none;">
+                    <i class="fas fa-redo"></i>
+                    Tentar Novamente
+                </button>
+            </div>
+            
+            <div class="spins-counter" id="spinsCounter">
+                <span>Giros restantes:</span>
+                <span class="spin-token" id="spin1"></span>
+                <span class="spin-token" id="spin2"></span>
+                <span class="spin-token" id="spin3"></span>
+            </div>
+            
+            <div class="result-container" id="resultContainer">
+                <div class="restaurant-header">
+                    <i id="restaurantIcon" class="fas fa-utensils"></i>
+                    <h2 id="restaurantName"></h2>
+                </div>
+                
+                <div class="map-container" id="map">
+                    <!-- Map will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Dados dos restaurantes (adicione mais conforme necessário)
+        const restaurants = [
+            {
+                name: "Blackpot Restaurant",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14555.94245930117!2d-48.60377168998433!3d-27.612406748231987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95273816195b3fe7%3A0xa51af3a95b173aa0!2sBlackpot%20Restaurant!5e0!3m2!1spt-BR!2sbr!4v1741356442805!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/TN4ipZTHUp2isDAo8",
+                color: "#FF5252",
+                icon: "fa-utensils",
+                angle: 90 // Cada seção terá um ângulo específico
+            },
+            {
+                name: "Osli Restaurante",
+                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.208911226234!2d-48.553954524633056!3d-27.587052021716403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9527393d97d1762d%3A0xc59b919a85bfcc8c!2sOsli%20Restaurante!5e0!3m2!1spt-BR!2sbr!4v1741356463493!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+                url: "https://maps.app.goo.gl/3Vzoha8WXihr5vh28",
+                color: "#536DFE",
+                icon: "fa-wine-glass-alt",
+                angle: 90
+            }
+            // Adicione mais restaurantes seguindo o mesmo formato
+            // Exemplo:
+            // {
+            //     name: "Nome do Restaurante",
+            //     mapEmbed: '<iframe src="LINK_DO_EMBED_DO_GOOGLE_MAPS" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+            //     url: "LINK_DO_GOOGLE_MAPS",
+            //     color: "#HEX_COLOR",
+            //     icon: "ICONE_FONTAWESOME",
+            //     angle: 90 // Ajuste o ângulo conforme necessário
+            // }
+        ];
+
+        // Calcular ângulos totais
+        function calculateAngles() {
+            let totalAngle = 0;
+            restaurants.forEach(restaurant => {
+                totalAngle += restaurant.angle;
+            });
+            
+            // Se o total não for 360, ajustar proporcionalmente
+            if (totalAngle !== 360) {
+                const ratio = 360 / totalAngle;
+                restaurants.forEach(restaurant => {
+                    restaurant.angle *= ratio;
+                });
+            }
+        }
+
+        // Variáveis globais
+        let currentRestaurant = null;
+        let currentAngle = 0;
+        let isSpinning = false;
+        let spinsLeft = 3;
+
+        // Elementos DOM
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spinBtn');
+        const acceptBtn = document.getElementById('acceptBtn');
+        const rejectBtn = document.getElementById('rejectBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const restaurantName = document.getElementById('restaurantName');
+        const restaurantIcon = document.getElementById('restaurantIcon');
+        const mapContainer = document.getElementById('map');
+        const spinsCounter = document.getElementById('spinsCounter');
+        
+        // Inicializar a roleta com ângulos específicos
+        function initWheel() {
+            // Calcular ângulos
+            calculateAngles();
+            
+            // Limpar a roda
+            wheel.innerHTML = '';
+            
+            // Criar seções da roleta com ângulos específicos
+            let currentDegree = 0;
+            
+            restaurants.forEach((restaurant, index) => {
+                const section = document.createElement('div');
+                section.className = 'wheel-section';
+                section.style.backgroundColor = restaurant.color;
+                section.style.transform = `rotate(${currentDegree}deg)`;
+                
+                // Calcular largura da seção baseada no ângulo
+                const sectionWidth = (restaurant.angle / 360) * 100;
+                section.style.width = `${sectionWidth}%`;
+                
+                const inner = document.createElement('div');
+                inner.className = 'section-inner';
+                
+                const icon = document.createElement('i');
+                icon.className = `fas ${restaurant.icon}`;
+                inner.appendChild(icon);
+                
+                const nameText = document.createElement('div');
+                nameText.className = 'section-name';
+                nameText.textContent = restaurant.name;
+                inner.appendChild(nameText);
+                
+                section.appendChild(inner);
+                wheel.appendChild(section);
+                
+                // Atualizar o ângulo atual para a próxima seção
+                currentDegree += restaurant.angle;
+            });
+        }
+        
+        // Girar a roleta
+        function spinWheel() {
+            if (isSpinning || spinsLeft <= 0) return;
+            
+            isSpinning = true;
+            spinsLeft--;
+            updateSpinsCounter();
+            
+            // Atualizar botões
+            spinBtn.disabled = true;
+            
+            // Esconder os resultados durante o giro
+            resultContainer.classList.remove('show');
+            
+            // Gerar ângulo aleatório (entre 2 e 5 voltas completas)
+            const spinAngle = 2 * 360 + Math.floor(Math.random() * 3 * 360);
+            const totalAngle = currentAngle + spinAngle;
+            
+            // Aplicar animação de giro
+            wheel.style.transition = 'transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+            wheel.style.transform = `rotate(${totalAngle}deg)`;
+            
+            // Atualizar ângulo atual
+            currentAngle = totalAngle;
+            
+            // Tempo para terminar a animação
+            setTimeout(() => {
+                isSpinning = false;
+                spinBtn.disabled = false;
+                
+                // Determinar o restaurante escolhido
+                const normalizedAngle = (currentAngle % 360 + 360) % 360; // Garantir um ângulo positivo entre 0-359
+                
+                // Encontrar a seção correspondente ao ângulo final
+                let accumulatedAngle = 0;
+                let selectedIndex = 0;
+                
+                for (let i = 0; i < restaurants.length; i++) {
+                    accumulatedAngle += restaurants[i].angle;
+                    if (normalizedAngle < accumulatedAngle) {
+                        selectedIndex = i;
+                        break;
+                    }
+                }
+                
+                currentRestaurant = restaurants[selectedIndex];
+                
+                // Exibir informações do restaurante imediatamente
+                showRestaurantInfo(currentRestaurant);
+                
+                // Verificar se ainda há giros restantes
+                if (spinsLeft > 0) {
+                    acceptBtn.style.display = 'flex';
+                    rejectBtn.style.display = 'flex';
+                    spinBtn.style.display = 'none';
+                } else {
+                    acceptBtn.style.display = 'flex';
+                    rejectBtn.style.display = 'none';
+                    spinBtn.style.display = 'none';
+                }
+                
+                // Animação de confete se for o último giro
+                if (spinsLeft === 0) {
+                    createConfetti();
+                }
+            }, 5000);
+        }
+        
+        // Exibir informações do restaurante
+        function showRestaurantInfo(restaurant) {
+            restaurantName.textContent = restaurant.name;
+            restaurantIcon.className = `fas ${restaurant.icon}`;
+            mapContainer.innerHTML = restaurant.mapEmbed;
+            
+            // Exibir as informações com animação
+            setTimeout(() => {
+                resultContainer.classList.add('show');
+            }, 200);
+        }
+        
+        // Atualizar contador de giros
+        function updateSpinsCounter() {
+            const spinTokens = document.querySelectorAll('.spin-token');
+            
+            spinTokens.forEach((token, index) => {
+                if (index < 3 - spinsLeft) {
+                    token.classList.add('used');
+                } else {
+                    token.classList.remove('used');
+                }
+            });
+        }
+        
+        // Criar efeito de confete
+        function createConfetti() {
+            const colors = ['#FF5252', '#536DFE', '#8BC34A', '#FF9800', '#9C27B0'];
+            const container = document.querySelector('.content');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animation = `fall ${1 + Math.random() * 2}s linear forwards`;
+                confetti.style.animationDelay = `${Math.random() * 3}s`;
+                
+                container.appendChild(confetti);
+                
+                // Remover após a animação
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Aceitar restaurante e enviar ao WhatsApp
+        function acceptRestaurant() {
+            // Preparar a mensagem para o WhatsApp
+            const message = `Oi amor, escolhi o restaurante ${currentRestaurant.name} para nosso encontro, veja no mapa o restaurante "${currentRestaurant.name}" ${currentRestaurant.url}`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappLink = `https://wa.me/5548984613946?text=${encodedMessage}`;
+            
+            // Esconder botões
+            spinBtn.style.display = 'none';
+            acceptBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+            
+            // Mostrar mensagem de sucesso
+            const successMessage = document.createElement('div');
+            successMessage.className = 'success-message';
+            successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Ótima escolha! Vamos avisar sobre o local escolhido.`;
+            
+            // Criar botão para WhatsApp
+            const whatsappButton = document.createElement('a');
+            whatsappButton.href = whatsappLink;
+            whatsappButton.target = '_blank';
+            whatsappButton.className = 'button button-primary button-link';
+            whatsappButton.style.marginTop = '1rem';
+            whatsappButton.innerHTML = '<i class="fab fa-whatsapp"></i> Enviar Mensagem';
+            
+            const buttonContainer = document.querySelector('.button-container');
+            buttonContainer.innerHTML = '';
+            buttonContainer.appendChild(successMessage);
+            buttonContainer.appendChild(whatsappButton);
+            
+            // Criar segundo botão para ver no Google Maps
+            const mapButton = document.createElement('a');
+            mapButton.href = currentRestaurant.url;
+            mapButton.target = '_blank';
+            mapButton.className = 'button button-secondary button-link';
+            mapButton.style.marginTop = '0.5rem';
+            mapButton.innerHTML = '<i class="fas fa-map-marker-alt"></i> Ver no Google Maps';
+            
+            buttonContainer.appendChild(mapButton);
+            
+            // Criar confetes para celebrar
+            createConfetti();
+            
+            // Redirecionar automaticamente para o WhatsApp após 1 segundo
+            setTimeout(() => {
+                window.open(whatsappLink, '_blank');
+            }, 1000);
+        }
+        
+        // Rejeitar restaurante e girar novamente
+        function rejectRestaurant() {
+            acceptBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+            spinBtn.style.display = 'flex';
+            resultContainer.classList.remove('show');
+        }
+        
+        // Inicializar a aplicação
+        function init() {
+            initWheel();
+            updateSpinsCounter();
+            
+            // Event listeners
+            spinBtn.addEventListener('click', spinWheel);
+            acceptBtn.addEventListener('click', acceptRestaurant);
+            rejectBtn.addEventListener('click', rejectRestaurant);
+            
+            // Esconder o resultado inicialmente
+            resultContainer.classList.remove('show');
+        }
+        
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
