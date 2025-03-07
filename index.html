@@ -71,92 +71,93 @@
 
         /* Wheel Styles */
         .wheel-container {
-            width: 280px;
-            height: 280px;
-            position: relative;
-            margin: 0 auto 2rem;
-        }
+    width: 280px;
+    height: 280px;
+    position: relative;
+    margin: 0 auto 2rem;
+}
 
-        .wheel-outer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
+.wheel-outer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
 
-        .wheel-inner {
-            width: 94%;
-            height: 94%;
-            border-radius: 50%;
-            background-color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.wheel-inner {
+    width: 94%;
+    height: 94%;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .wheel {
-            width: 90%;
-            height: 90%;
-            position: relative;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-        }
 
-        .wheel-section {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform-origin: center;
-            clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%);
-        }
+.wheel {
+    width: 90%;
+    height: 90%;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
 
-        .section-content {
-            position: absolute;
-            left: 70%;
-            top: 25%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            width: 80px;
-            text-align: center;
-            color: white;
-            font-weight: bold;
-            font-size: 12px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
+.wheel-section {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 0;
+    left: 50%;
+    transform-origin: bottom left;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
 
-        .section-content i {
-            font-size: 16px;
-            margin-bottom: 5px;
-            display: block;
-        }
+.section-content {
+    position: absolute;
+    left: 30%;
+    top: 30%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 70px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
 
-        .wheel-center {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 22px;
-            z-index: 10;
-            border: 3px solid white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+.section-content i {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.wheel-center {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 22px;
+    z-index: 10;
+    border: 3px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
         .wheel-pointer {
             position: absolute;
@@ -665,82 +666,90 @@
 
         // Inicializar a roleta
         function initWheel() {
-            // Ângulo para cada restaurante
-            const sectionAngle = 360 / restaurants.length;
-            
-            // Limpar a roda
-            wheel.innerHTML = '';
+    // Ângulo para cada restaurante
+    const sectionAngle = 360 / restaurants.length;
+    
+    // Limpar a roda
+    wheel.innerHTML = '';
 
-            // Criar seções da roleta
-            restaurants.forEach((restaurant, index) => {
-                const section = document.createElement('div');
-                section.className = 'wheel-section';
-                section.style.backgroundColor = restaurant.color;
-                
-                // Rotação da seção (distribuir uniformemente)
-                const rotationAngle = index * sectionAngle;
-                section.style.transform = `rotate(${rotationAngle}deg)`;
-                
-                // Conteúdo da seção
-                const content = document.createElement('div');
-                content.className = 'section-content';
-                
-                // Ajustar o conteúdo para ficar no centro da seção
-                content.style.transform = `translate(-50%, -50%) rotate(${90 - rotationAngle}deg)`;
-                
-                const icon = document.createElement('i');
-                icon.className = `fas ${restaurant.icon}`;
-                content.appendChild(icon);
-                
-                const name = document.createElement('span');
-                name.textContent = restaurant.name;
-                content.appendChild(name);
-                
-                section.appendChild(content);
-                wheel.appendChild(section);
-            });
-        }
+    // Criar seções da roleta
+    restaurants.forEach((restaurant, index) => {
+        const section = document.createElement('div');
+        section.className = 'wheel-section';
+        section.style.backgroundColor = restaurant.color;
+        
+        // Rotação da seção (distribuir uniformemente)
+        const rotationAngle = index * sectionAngle;
+        section.style.transform = `rotate(${rotationAngle}deg)`;
+        
+        // Conteúdo da seção
+        const content = document.createElement('div');
+        content.className = 'section-content';
+        
+        // Corrigir a posição do conteúdo para cada seção
+        // O ângulo de rotação para o conteúdo precisa ser ajustado para cada seção
+        content.style.transform = `translate(-50%, -50%) rotate(${45 + sectionAngle/2}deg)`;
+        
+        const icon = document.createElement('i');
+        icon.className = `fas ${restaurant.icon}`;
+        content.appendChild(icon);
+        
+        const name = document.createElement('span');
+        // Reduzir o tamanho do texto para evitar sobreposição
+        name.style.fontSize = '10px';
+        name.style.display = 'block';
+        name.style.marginTop = '3px';
+        name.textContent = restaurant.name;
+        content.appendChild(name);
+        
+        section.appendChild(content);
+        wheel.appendChild(section);
+    });
+}
 
         // Girar a roleta
         function spinWheel() {
-            if (isSpinning || spinsLeft <= 0) return;
+    if (isSpinning || spinsLeft <= 0) return;
 
-            isSpinning = true;
-            spinsLeft--;
-            updateSpinsCounter();
-            saveCookies();
+    isSpinning = true;
+    spinsLeft--;
+    updateSpinsCounter();
+    saveCookies();
 
-            // Desabilitar botão durante o giro
-            spinBtn.disabled = true;
+    // Desabilitar botão durante o giro
+    spinBtn.disabled = true;
 
-            // Gerar ângulo aleatório (entre 2 e 4 voltas completas)
-            const spinAngle = 2 * 360 + Math.floor(Math.random() * 2 * 360);
-            const totalAngle = currentAngle + spinAngle;
+    // Gerar ângulo aleatório (entre 2 e 4 voltas completas)
+    const spinAngle = 2 * 360 + Math.floor(Math.random() * 2 * 360);
+    const totalAngle = currentAngle + spinAngle;
 
-            // Aplicar animação de giro
-            wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
-            wheel.style.transform = `rotate(${totalAngle}deg)`;
+    // Aplicar animação de giro
+    wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+    wheel.style.transform = `rotate(${totalAngle}deg)`;
 
-            // Atualizar ângulo atual
-            currentAngle = totalAngle;
+    // Atualizar ângulo atual
+    currentAngle = totalAngle;
 
-            // Tempo para terminar a animação
-            setTimeout(() => {
-                isSpinning = false;
-                updateButtonState();
+    // Tempo para terminar a animação
+    setTimeout(() => {
+        isSpinning = false;
+        updateButtonState();
 
-                // Determinar o restaurante escolhido (ângulo normalizado)
-                const normalizedAngle = (totalAngle % 360);
-                const sectionAngle = 360 / restaurants.length;
-                const selectedIndex = Math.floor(normalizedAngle / sectionAngle) % restaurants.length;
-                
-                // Corrigir o índice para considerar a rotação revertida
-                const correctedIndex = (restaurants.length - selectedIndex) % restaurants.length;
-                
-                currentRestaurant = restaurants[correctedIndex];
-                showRestaurantModal(currentRestaurant);
-            }, 4000);
-        }
+        // Determinar o restaurante escolhido (ângulo normalizado)
+        const normalizedAngle = totalAngle % 360;
+        const sectionAngle = 360 / restaurants.length;
+        
+        // Cálculo correto para determinar qual seção foi escolhida
+        // O +0.5 * sectionAngle ajusta para o centro da seção
+        let selectedIndex = Math.floor(((normalizedAngle + 0.5 * sectionAngle) % 360) / sectionAngle);
+        
+        // Ajuste para garantir que o índice esteja dentro do intervalo válido
+        selectedIndex = (selectedIndex + restaurants.length) % restaurants.length;
+        
+        currentRestaurant = restaurants[selectedIndex];
+        showRestaurantModal(currentRestaurant);
+    }, 4000);
+}
 
         // Exibir modal com informações do restaurante
         function showRestaurantModal(restaurant) {
@@ -786,7 +795,7 @@
         // Aceitar restaurante
         function acceptRestaurant() {
             // Preparar mensagem para WhatsApp
-            const message = `Oi amor, escolhi um restaurante da sua lista para aproveitarmos juntos! 💓\n\n🍽️ *Nome do restaurante:* ${currentRestaurant.name}\n📍 *Localização:* ${currentRestaurant.url}\n\nEstou ansiosa para sair com você, meu gatinho! 😘`;
+            const message = `Oi amor, escolhi um restaurante da sua lista para aproveitarmos juntos!\n\n- *Nome do restaurante:* ${currentRestaurant.name}\n- *Localização:* ${currentRestaurant.url}\n\nEstou ansiosa para sair com você, meu gatinho!`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappLink = `https://wa.me/5548984613946?text=${encodedMessage}`;
 
