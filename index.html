@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roleta do Amor</title>
+    <title>Roleta do Amor <3</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -112,45 +112,31 @@
 
         .wheel-section {
             position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 50%;
-            left: 50%;
-            transform-origin: 0% 0%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-            clip-path: polygon(0 0, 100% 0, 0 100%);
-        }
-
-        .section-inner {
-            position: absolute;
+            top: 0;
+            right: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(45deg);
-            padding-left: 40px;
-            padding-bottom: 40px;
+            transform-origin: 0 50%;
+            clip-path: polygon(0 0, 50% 0, 0 100%);
         }
 
-        .section-inner i {
+        .section-content {
+            position: absolute;
+            left: 5%;
+            top: 25%;
+            transform: rotate(-60deg);
+            width: 80px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .section-content i {
             font-size: 16px;
             margin-bottom: 5px;
-        }
-
-        .section-name {
-            font-size: 11px;
-            max-width: 80px;
-            text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-weight: 600;
+            display: block;
         }
 
         .wheel-center {
@@ -191,63 +177,6 @@
             height: 100%;
             background-color: var(--primary);
             clip-path: polygon(50% 100%, 0 0, 100% 0);
-        }
-
-        /* Result Styles */
-        .result-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            margin-top: 1rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            background-color: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .result-container.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .restaurant-header {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .restaurant-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .restaurant-header i {
-            font-size: 1.4rem;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .map-container {
-            width: 100%;
-            height: 250px;
-            overflow: hidden;
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
         }
 
         /* Buttons */
@@ -334,6 +263,88 @@
             background-color: #e0e0e0;
         }
 
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .modal-header i {
+            font-size: 1.4rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-map {
+            width: 100%;
+            height: 250px;
+        }
+
+        .modal-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
         /* Success message */
         .success-message {
             text-align: center;
@@ -395,14 +406,6 @@
                     <i class="fas fa-sync-alt"></i>
                     Girar a Roleta
                 </button>
-                <button id="acceptBtn" class="button button-primary" style="display: none;">
-                    <i class="fas fa-check"></i>
-                    Escolher Este Restaurante
-                </button>
-                <button id="rejectBtn" class="button button-secondary" style="display: none;">
-                    <i class="fas fa-redo"></i>
-                    Tentar Novamente
-                </button>
             </div>
 
             <div class="spins-counter" id="spinsCounter">
@@ -411,16 +414,28 @@
                 <span class="spin-token" id="spin2"></span>
                 <span class="spin-token" id="spin3"></span>
             </div>
+        </div>
+    </div>
 
-            <div class="result-container" id="resultContainer">
-                <div class="restaurant-header">
-                    <i id="restaurantIcon" class="fas fa-utensils"></i>
-                    <h2 id="restaurantName"></h2>
-                </div>
-
-                <div class="map-container" id="map">
-                    <!-- Map will be loaded here -->
-                </div>
+    <!-- Modal result -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i id="restaurantIcon" class="fas fa-utensils"></i>
+                <h2 id="restaurantName"></h2>
+            </div>
+            <div class="modal-map" id="map">
+                <!-- Map will be loaded here -->
+            </div>
+            <div class="modal-actions" id="modalActions">
+                <button id="acceptBtn" class="button button-primary">
+                    <i class="fas fa-check"></i>
+                    Escolher Este Restaurante
+                </button>
+                <button id="rejectBtn" class="button button-secondary">
+                    <i class="fas fa-redo"></i>
+                    Tentar Novamente
+                </button>
             </div>
         </div>
     </div>
@@ -448,41 +463,6 @@
                 url: "https://maps.app.goo.gl/rhnnUmHoeHbLKDK56",
                 color: "#9C27B0",
                 icon: "fa-coffee"
-            },
-            {
-                name: "Santa Cucina",
-                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.7896976606373!2d-48.5367!3d-27.6100047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952742f9f9bb5fab%3A0x85e5c53af1d8d95!2sSanta%20Cucina!5e0!3m2!1spt-BR!2sbr!4v1709827901918!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
-                url: "https://maps.app.goo.gl/tYnKKBHuyM4VFfVE7",
-                color: "#8BC34A",
-                icon: "fa-pizza-slice"
-            },
-            {
-                name: "Píer 54 Restaurante",
-                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.1232976606373!2d-48.5523456!3d-27.6534041!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952748262d5f1a81%3A0xbe4e2e22b56131a5!2zUMOtZXIgNTQgUmVzdGF1cmFudGU!5e0!3m2!1spt-BR!2sbr!4v1709827962918!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
-                url: "https://maps.app.goo.gl/Bt5EtFM1Zg2yimZ49",
-                color: "#009688",
-                icon: "fa-fish"
-            },
-            {
-                name: "Forneria Catarina",
-                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.4555976606373!2d-48.64457!3d-27.6300047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952738c08b5cd72d%3A0x9b9d88fcc9a3ce6c!2sForneria%20Catarina%20S%C3%A3o%20Jos%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1709828021918!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
-                url: "https://maps.app.goo.gl/37NqpVTbS4xNUaYq7",
-                color: "#FF9800",
-                icon: "fa-pizza-slice"
-            },
-            {
-                name: "El Señor Asador",
-                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.6232976606373!2d-48.59457!3d-27.6200047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95273801d48df00b%3A0x3e2d37f83bd01634!2sEl%20Se%C3%B1or%20Asador%20de%20Brasa!5e0!3m2!1spt-BR!2sbr!4v1709828081918!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
-                url: "https://maps.app.goo.gl/XATMJQ12Aw8ERGWf9",
-                color: "#795548",
-                icon: "fa-drumstick-bite"
-            },
-            {
-                name: "Outback Steakhouse",
-                mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.5232976606373!2d-48.50457!3d-27.6250047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952747b5e8e9eadb%3A0xf4e8c6d7e93a6ba!2sOutback%20Steakhouse!5e0!3m2!1spt-BR!2sbr!4v1709828141918!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
-                url: "https://maps.app.goo.gl/HkYooddBJ4q3NpKE6",
-                color: "#FF5722",
-                icon: "fa-drumstick-bite"
             }
         ];
 
@@ -497,48 +477,42 @@
         const spinBtn = document.getElementById('spinBtn');
         const acceptBtn = document.getElementById('acceptBtn');
         const rejectBtn = document.getElementById('rejectBtn');
-        const resultContainer = document.getElementById('resultContainer');
+        const resultModal = document.getElementById('resultModal');
         const restaurantName = document.getElementById('restaurantName');
         const restaurantIcon = document.getElementById('restaurantIcon');
         const mapContainer = document.getElementById('map');
+        const modalActions = document.getElementById('modalActions');
 
         // Inicializar a roleta
         function initWheel() {
-            // Definir ângulos iguais para cada restaurante
-            const anglePerRestaurant = 360 / restaurants.length;
+            // Ângulo para cada restaurante
+            const sectionAngle = 360 / restaurants.length;
             
             // Limpar a roda
             wheel.innerHTML = '';
 
             // Criar seções da roleta
             restaurants.forEach((restaurant, index) => {
-                // Guardar o ângulo para cada restaurante
-                restaurant.angle = anglePerRestaurant;
-                
                 const section = document.createElement('div');
                 section.className = 'wheel-section';
                 section.style.backgroundColor = restaurant.color;
                 
-                // Calcular ângulo para esta seção
-                const angle = index * anglePerRestaurant;
+                // Rotação da seção (distribuir uniformemente)
+                section.style.transform = `rotate(${index * sectionAngle}deg)`;
                 
-                // Posicionar cada seção
-                section.style.transform = `rotate(${angle}deg)`;
+                // Conteúdo da seção
+                const content = document.createElement('div');
+                content.className = 'section-content';
                 
-                // Conteúdo interno da seção
-                const inner = document.createElement('div');
-                inner.className = 'section-inner';
-
                 const icon = document.createElement('i');
                 icon.className = `fas ${restaurant.icon}`;
-                inner.appendChild(icon);
-
-                const nameText = document.createElement('div');
-                nameText.className = 'section-name';
-                nameText.textContent = restaurant.name;
-                inner.appendChild(nameText);
-
-                section.appendChild(inner);
+                content.appendChild(icon);
+                
+                const name = document.createElement('span');
+                name.textContent = restaurant.name;
+                content.appendChild(name);
+                
+                section.appendChild(content);
                 wheel.appendChild(section);
             });
         }
@@ -551,9 +525,8 @@
             spinsLeft--;
             updateSpinsCounter();
 
-            // Atualizar botões
+            // Desabilitar botão durante o giro
             spinBtn.disabled = true;
-            resultContainer.classList.remove('show');
 
             // Gerar ângulo aleatório (entre 2 e 4 voltas completas)
             const spinAngle = 2 * 360 + Math.floor(Math.random() * 2 * 360);
@@ -571,56 +544,39 @@
                 isSpinning = false;
                 spinBtn.disabled = false;
 
-                // Determinar o restaurante escolhido
-                const normalizedAngle = (360 - (currentAngle % 360)) % 360;
-
-                // Encontrar a seção correspondente ao ângulo final
-                let accumulatedAngle = 0;
-                let selectedIndex = 0;
-
-                for (let i = 0; i < restaurants.length; i++) {
-                    const sectionAngle = restaurants[i].angle;
-                    
-                    if (normalizedAngle >= accumulatedAngle && normalizedAngle < (accumulatedAngle + sectionAngle)) {
-                        selectedIndex = i;
-                        break;
-                    }
-                    
-                    accumulatedAngle += sectionAngle;
-                }
-
+                // Determinar o restaurante escolhido (ângulo normalizado)
+                const normalizedAngle = (totalAngle % 360);
+                const sectionAngle = 360 / restaurants.length;
+                const selectedIndex = Math.floor(normalizedAngle / sectionAngle) % restaurants.length;
+                
                 currentRestaurant = restaurants[selectedIndex];
-                showRestaurantInfo(currentRestaurant);
-
-                // Verificar se ainda há giros restantes
-                if (spinsLeft > 0) {
-                    acceptBtn.style.display = 'flex';
-                    rejectBtn.style.display = 'flex';
-                    spinBtn.style.display = 'none';
-                } else {
-                    acceptBtn.style.display = 'flex';
-                    rejectBtn.style.display = 'none';
-                    spinBtn.style.display = 'none';
-                }
+                showRestaurantModal(currentRestaurant);
             }, 4000);
         }
 
-        // Exibir informações do restaurante
-        function showRestaurantInfo(restaurant) {
+        // Exibir modal com informações do restaurante
+        function showRestaurantModal(restaurant) {
             restaurantName.textContent = restaurant.name;
             restaurantIcon.className = `fas ${restaurant.icon}`;
             mapContainer.innerHTML = restaurant.mapEmbed;
 
-            // Exibir as informações com animação
-            setTimeout(() => {
-                resultContainer.classList.add('show');
-            }, 200);
+            // Configurar botões do modal
+            if (spinsLeft > 0) {
+                acceptBtn.style.display = 'flex';
+                rejectBtn.style.display = 'flex';
+            } else {
+                acceptBtn.style.display = 'flex';
+                rejectBtn.style.display = 'none';
+            }
+
+            // Exibir o modal
+            resultModal.classList.add('active');
         }
 
         // Atualizar contador de giros
         function updateSpinsCounter() {
             const spinTokens = document.querySelectorAll('.spin-token');
-
+            
             spinTokens.forEach((token, index) => {
                 if (index < 3 - spinsLeft) {
                     token.classList.add('used');
@@ -630,54 +586,45 @@
             });
         }
 
-        // Aceitar restaurante e enviar ao WhatsApp
+        // Aceitar restaurante
         function acceptRestaurant() {
-            // Preparar a mensagem para o WhatsApp
+            // Preparar mensagem para WhatsApp
             const message = `Oi amor, escolhi o restaurante ${currentRestaurant.name} para nosso encontro, veja no mapa o restaurante "${currentRestaurant.name}" ${currentRestaurant.url}`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappLink = `https://wa.me/5548984613946?text=${encodedMessage}`;
 
-            // Esconder botões
-            spinBtn.style.display = 'none';
-            acceptBtn.style.display = 'none';
-            rejectBtn.style.display = 'none';
-
-            // Mostrar mensagem de sucesso
+            // Limpar ações do modal
+            modalActions.innerHTML = '';
+            
+            // Adicionar mensagem de sucesso e novos botões
             const successMessage = document.createElement('div');
             successMessage.className = 'success-message';
-            successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Ótima escolha! Vamos avisar sobre o local escolhido.`;
-
-            // Criar botões
+            successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Ótima escolha!`;
+            modalActions.appendChild(successMessage);
+            
             const whatsappButton = document.createElement('a');
             whatsappButton.href = whatsappLink;
             whatsappButton.target = '_blank';
             whatsappButton.className = 'button button-primary button-link';
             whatsappButton.innerHTML = '<i class="fab fa-whatsapp"></i> Enviar Mensagem';
-
+            modalActions.appendChild(whatsappButton);
+            
             const mapButton = document.createElement('a');
             mapButton.href = currentRestaurant.url;
             mapButton.target = '_blank';
             mapButton.className = 'button button-secondary button-link';
             mapButton.innerHTML = '<i class="fas fa-map-marker-alt"></i> Ver no Google Maps';
-
-            const buttonContainer = document.querySelector('.button-container');
-            buttonContainer.innerHTML = '';
-            buttonContainer.appendChild(successMessage);
-            buttonContainer.appendChild(whatsappButton);
-            buttonContainer.appendChild(mapButton);
-
-            // Redirecionar para o WhatsApp após 1 segundo
+            modalActions.appendChild(mapButton);
+            
+            // Redirecionar para WhatsApp após 1 segundo
             setTimeout(() => {
                 window.open(whatsappLink, '_blank');
             }, 1000);
         }
 
-        // Rejeitar restaurante e girar novamente
+        // Rejeitar restaurante e fechar o modal
         function rejectRestaurant() {
-            acceptBtn.style.display = 'none';
-            rejectBtn.style.display = 'none';
-            spinBtn.style.display = 'flex';
-            resultContainer.classList.remove('show');
+            resultModal.classList.remove('active');
         }
 
         // Inicializar a aplicação
