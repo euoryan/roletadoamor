@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta do Date Especial</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --primary-dark: #e95f5f;
+            --secondary: #2c3e50;
+            --accent: #ff8e8e;
+            --text: #3a3a3a;
+            --light: #f8f9fa;
+            --bg: #fdfdfd;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            overflow-x: hidden;
+            padding: 1rem;
+        }
+        
+        /* Preload font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 2rem auto;
+            background-color: var(--bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background-image: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10.5%);
+            background-size: 20px 20px;
+            transform: rotate(30deg);
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+        
+        /* Wheel Container & Design */
+        .wheel-container {
+            width: 350px;
+            height: 350px;
+            position: relative;
+            margin: 0 auto 3rem;
+        }
+        
+        .wheel-outer-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .wheel-inner-ring {
+            width: 94%;
+            height: 94%;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .wheel {
+            width: 90%;
+            height: 90%;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            transform: rotate(0deg);
+        }
+        
+        .wheel-section {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 50%;
+            transform-origin: 0% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            padding: 0 5px;
+            transform: rotate(0deg) skewY(60deg);
+            box-sizing: border-box;
+            overflow: hidden;
+            z-index: 2;
+        }
+        
+        .section-inner {
+            transform: skewY(-60deg) rotate(15deg);
+            width: 100%;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .wheel-center {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            z-index: 5;
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+        }
+        
+        .wheel-pointer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+        }
+        
+        /* Restaurant Info & Map */
+        .result-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-top: 1rem;
+            gap: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        .result-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .restaurant-info {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .restaurant-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+        }
+        
+        .restaurant-info h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .restaurant-info p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Buttons & Controls */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .button-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-primary:active {
+            transform: translateY(-1px);
+        }
+        
+        .button-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .button-secondary:hover {
+            background-color: #1e2a36;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-secondary:active {
+            transform: translateY(-1px);
+        }
+        
+        .button:disabled {
+            background-color: #e0e0e0;
+            color: #9e9e9e;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .spins-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+        
+        .spin-token {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .spin-token.used {
+            background-color: #e0e0e0;
+        }
+        
+        /* Animations & Decorations */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(1000px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Responsiveness */
+        @media (min-width: 768px) {
+            .result-container {
+                flex-direction: row;
+                align-items: stretch;
+            }
+            
+            .restaurant-info, .map-container {
+                flex: 1;
+                height: auto;
+                min-height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .wheel-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .content {
+                padding: 2rem 1rem;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+            
+            .button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .wheel-container {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1>Date Especial</h1>
+            <p>Gire a roleta e descubra onde será nosso jantar romântico. Você tem 3 giros para escolher o local perfeito!</p>
+        </div>
+        
+        <div class="content">
+            <div class="wheel-container">
+                <div class="wheel-outer-ring">
+                    <div class="wheel-inner-ring">
+                        <div class="wheel" id="wheel">
+                            <!-- Seções da roleta serão adicionadas via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="wheel-center">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="wheel-pointer"></div>
+            </div>
+            
+            <div class="button-container">
+                <button id="spinBtn" class="button button-primary">
+                    <i class="fas fa-sync-alt"></i>
+                    Girar a Roleta
+                </button>
+                <button id="acceptBtn" class="button button-primary" style="display: none;">
+                    <i class="fas fa-check"></i>
+                    Aceitar Restaurante
+                </button>
+                <button id="rejectBtn" class="button button-secondary" style="display: none;">
+                    <i class="fas fa-redo"></i>
+                    Tentar Novamente
+                </button>
+            </div>
+            
+            <div class="spins-counter" id="spinsCounter">
+                <span>Giros restantes:</span>
+                <span class="spin-token" id="spin1"></span>
+                <span class="spin-token" id="spin2"></span>
+                <span class="spin-token" id="spin3"></span>
+            </div>
+            
+            <div class="result-container" id="resultContainer">
+                <div class="restaurant-info" id="restaurantInfo">
+                    <h2 id="restaurantName"></h2>
+                    <p id="restaurantDescription"></p>
+                </div>
+                
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Dados dos restaurantes (apenas 2 para exemplo)
+        const restaurants = [
+    {
+        name: "Blackpot Restaurant",
+        description: "Conhecido por sua culinária autêntica e ambiente acolhedor. Um excelente lugar para apreciar pratos elaborados e compartilhar momentos especiais.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14555.94245930117!2d-48.60377168998433!3d-27.612406748231987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95273816195b3fe7%3A0xa51af3a95b173aa0!2sBlackpot%20Restaurant!5e0!3m2!1spt-BR!2sbr!4v1741356442805!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/TN4ipZTHUp2isDAo8",
+        color: "#FF5252",
+        icon: "fa-utensils"
+    },
+    {
+        name: "Osli Restaurante",
+        description: "Elegante restaurante com decoração refinada e menu que valoriza os sabores locais. Perfeito para uma noite romântica com pratos cuidadosamente preparados.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.208911226234!2d-48.553954524633056!3d-27.587052021716403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9527393d97d1762d%3A0xc59b919a85bfcc8c!2sOsli%20Restaurante!5e0!3m2!1spt-BR!2sbr!4v1741356463493!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/3Vzoha8WXihr5vh28",
+        color: "#536DFE",
+        icon: "fa-wine-glass-alt"
+    },
+    {
+        name: "Bistrô da Praça",
+        description: "Um charmoso bistrô com ambiente intimista e cardápio sazonal. Ótimo para degustar pratos delicados acompanhados de um bom vinho em um ambiente descontraído.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.1464998671427!2d-48.548460824633125!3d-27.588987321799163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9527383d8788227f%3A0x36eb1a225e36b86b!2zQmlzdHLDtCBkYSBQcmHDp2E!5e0!3m2!1spt-BR!2sbr!4v1741356476501!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/rhnnUmHoeHbLKDK56",
+        color: "#9C27B0",
+        icon: "fa-coffee"
+    },
+    {
+        name: "Santa Cucina",
+        description: "Autêntica culinária italiana em um ambiente que remete à Itália. Experimente as massas artesanais e os risotos cremosos preparados com ingredientes frescos e de qualidade.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.1464998671427!2d-48.548460824633125!3d-27.588987321799163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952738198f442d33%3A0x2e5aa253187223ed!2sG%C3%81LIA%20RESTAURANTE!5e0!3m2!1spt-BR!2sbr!4v1741356487276!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/tYnKKBHuyM4VFfVE7",
+        color: "#8BC34A",
+        icon: "fa-pizza-slice"
+    },
+    {
+        name: "Píer 54 Restaurante",
+        description: "Localizado em um ponto privilegiado, oferece uma experiência gastronômica com vista. Especializado em frutos do mar frescos e pratos contemporâneos.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2291465652456!2d-48.55305112463308!3d-27.586424521689484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952737f61d6cad93%3A0x4794b9616eb83760!2sP%C3%ADer%2054%20Restaurante!5e0!3m2!1spt-BR!2sbr!4v1741356496643!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/Bt5EtFM1Zg2yimZ49",
+        color: "#009688",
+        icon: "fa-fish"
+    },
+    {
+        name: "Forneria Catarina São José",
+        description: "Pizzaria artesanal com forno à lenha que traz o verdadeiro sabor da pizza italiana. Ambiente agradável e pizzas preparadas com ingredientes selecionados.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.7718469784554!2d-48.61371712463258!3d-27.600602222296292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952737f4ef61e571%3A0x5ec3be8e68653cd7!2sForneria%20Catarina%20S%C3%A3o%20Jos%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1741356506549!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/37NqpVTbS4xNUaYq7",
+        color: "#FF9800",
+        icon: "fa-pizza-slice"
+    },
+    {
+        name: "El Señor Asador de Brasa",
+        description: "Autêntica parrilla com os melhores cortes de carne preparados na brasa. Ambiente rústico e aconchegante para uma refeição memorável com muito sabor.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2385465824295!2d-48.55021022463315!3d-27.586133021677004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9527397e5fb01c83%3A0x42c5ae94f40e7675!2sEl%20Se%C3%B1or%20Asador%20de%20Brasa!5e0!3m2!1spt-BR!2sbr!4v1741356531078!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/XATMJQ12Aw8ERGWf9",
+        color: "#795548",
+        icon: "fa-drumstick-bite"
+    },
+    {
+        name: "Outback Steakhouse",
+        description: "Famosa steakhouse australiana conhecida por seus cortes generosos e pelo característico Bloomin' Onion. Ambiente animado e pratos saborosos para uma experiência diferente.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8408.31663177688!2d-48.65085092598623!3d-27.616423085544216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952735cdaa28ffbd%3A0x4cb5f70eb5cab7c6!2sRestaurante%20Outback%20Steakhouse!5e0!3m2!1spt-BR!2sbr!4v1741356562454!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/HkYooddBJ4q3NpKE6",
+        color: "#FF5722",
+        icon: "fa-drumstick-bite"
+    },
+    {
+        name: "Little Carbone",
+        description: "Especializado em carnes premium preparadas no carvão. Atmosfera moderna e sofisticada com menu que valoriza ingredientes de qualidade e técnicas precisas de preparo.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3537.288237389849!2d-48.50166782463456!3d-27.55356362028453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952739cd7fb7d557%3A0x2f6b2d5be9c363c9!2sLittle%20Carbone!5e0!3m2!1spt-BR!2sbr!4v1741356579902!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/UuAxSuYcdNP6oMDq6",
+        color: "#607D8B",
+        icon: "fa-fire"
+    },
+    {
+        name: "Dom Piero Churrasco, Galeto e Massas",
+        description: "Um restaurante versátil que une o melhor do churrasco, do galeto e da culinária italiana. Ideal para quem deseja variedade em um ambiente familiar e acolhedor.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2564047505884!2d-48.61621222463328!3d-27.58557922165344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x952749dca8f53979%3A0xad093208e611a4fa!2sDom%20Piero%20Churrasco%2C%20Galeto%20e%20Massas!5e0!3m2!1spt-BR!2sbr!4v1741356593244!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/JKgCFTmnPvvc4sx18",
+        color: "#673AB7",
+        icon: "fa-utensils"
+    },
+    {
+        name: "Santo Antonio de Lisboa",
+        description: "Localizado em um charmoso bairro histórico, oferece uma experiência única com vista para o mar e pratos que valorizam os ingredientes e a cultura local.",
+        mapEmbed: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3536.2564047505884!2d-48.61621222463328!3d-27.58557922165344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95274692c1cfaca5%3A0x9893a62751be06a5!2sSanto%20Antonio%20de%20Lisboa%2C%20Florian%C3%B3polis%20-%20SC!5e0!3m2!1spt-BR!2sbr!4v1741356604109!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+        url: "https://maps.app.goo.gl/qE4dqn3R4GR8j3TY6",
+        color: "#3F51B5",
+        icon: "fa-utensils"
+    }
+];
+
+        // Variáveis globais
+        let currentRestaurant = null;
+        let currentAngle = 0;
+        let isSpinning = false;
+        let spinsLeft = 3;
+
+        // Elementos DOM
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spinBtn');
+        const acceptBtn = document.getElementById('acceptBtn');
+        const rejectBtn = document.getElementById('rejectBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const restaurantName = document.getElementById('restaurantName');
+        const restaurantDescription = document.getElementById('restaurantDescription');
+        const mapContainer = document.getElementById('map');
+        const spinsCounter = document.getElementById('spinsCounter');
+        
+        // Inicializar a roleta
+        function initWheel() {
+            // Limpar a roda
+            wheel.innerHTML = '';
+            
+            // Calcular ângulo por seção
+            const sectionAngle = 360 / restaurants.length;
+            
+            // Criar seções da roleta
+            restaurants.forEach((restaurant, index) => {
+                const section = document.createElement('div');
+                section.className = 'wheel-section';
+                section.style.backgroundColor = restaurant.color;
+                section.style.transform = `rotate(${index * sectionAngle}deg) skewY(${(restaurants.length <= 2) ? 0 : 60}deg)`;
+                
+                const inner = document.createElement('div');
+                inner.className = 'section-inner';
+                inner.style.transform = `skewY(${(restaurants.length <= 2) ? 0 : -60}deg) rotate(${sectionAngle / 2}deg)`;
+                
+                const icon = document.createElement('i');
+                icon.className = `fas ${restaurant.icon} fa-lg`;
+                inner.appendChild(icon);
+                
+                const nameText = document.createElement('div');
+                nameText.textContent = restaurant.name;
+                nameText.style.fontSize = '12px';
+                nameText.style.marginTop = '8px';
+                inner.appendChild(nameText);
+                
+                section.appendChild(inner);
+                wheel.appendChild(section);
+            });
+        }
+        
+        // Girar a roleta
+        function spinWheel() {
+            if (isSpinning || spinsLeft <= 0) return;
+            
+            isSpinning = true;
+            spinsLeft--;
+            updateSpinsCounter();
+            
+            // Atualizar botões
+            spinBtn.disabled = true;
+            
+            // Esconder os resultados durante o giro
+            resultContainer.classList.remove('show');
+            
+            // Gerar ângulo aleatório (entre 2 e 5 voltas completas)
+            const spinAngle = 2 * 360 + Math.floor(Math.random() * 3 * 360);
+            const totalAngle = currentAngle + spinAngle;
+            
+            // Aplicar animação de giro
+            wheel.style.transition = 'transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+            wheel.style.transform = `rotate(${totalAngle}deg)`;
+            
+            // Atualizar ângulo atual
+            currentAngle = totalAngle;
+            
+            // Tempo para terminar a animação
+            setTimeout(() => {
+                isSpinning = false;
+                spinBtn.disabled = false;
+                
+                // Determinar o restaurante escolhido
+                const sectionAngle = 360 / restaurants.length;
+                const normalizedAngle = currentAngle % 360;
+                const sectionIndex = Math.floor(normalizedAngle / sectionAngle);
+                const selectedIndex = (restaurants.length - 1) - (sectionIndex % restaurants.length);
+                
+                currentRestaurant = restaurants[selectedIndex];
+                
+                // Exibir informações do restaurante
+                showRestaurantInfo(currentRestaurant);
+                
+                // Verificar se ainda há giros restantes
+                if (spinsLeft > 0) {
+                    acceptBtn.style.display = 'flex';
+                    rejectBtn.style.display = 'flex';
+                    spinBtn.style.display = 'none';
+                } else {
+                    acceptBtn.style.display = 'flex';
+                    rejectBtn.style.display = 'none';
+                    spinBtn.style.display = 'none';
+                }
+                
+                // Animação de confete se for o último giro
+                if (spinsLeft === 0) {
+                    createConfetti();
+                }
+            }, 5000);
+        }
+        
+        // Exibir informações do restaurante
+        function showRestaurantInfo(restaurant) {
+            restaurantName.innerHTML = `<i class="fas ${restaurant.icon}"></i> ${restaurant.name}`;
+            restaurantDescription.textContent = restaurant.description;
+            mapContainer.innerHTML = restaurant.mapEmbed;
+            
+            // Exibir as informações com animação
+            setTimeout(() => {
+                resultContainer.classList.add('show');
+            }, 200);
+        }
+        
+        // Atualizar contador de giros
+        function updateSpinsCounter() {
+            const spinTokens = document.querySelectorAll('.spin-token');
+            
+            spinTokens.forEach((token, index) => {
+                if (index < 3 - spinsLeft) {
+                    token.classList.add('used');
+                } else {
+                    token.classList.remove('used');
+                }
+            });
+        }
+        
+        // Criar efeito de confete
+        function createConfetti() {
+            const colors = ['#FF5252', '#536DFE', '#8BC34A', '#FF9800', '#9C27B0'];
+            const container = document.querySelector('.content');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animation = `fall ${1 + Math.random() * 2}s linear forwards`;
+                confetti.style.animationDelay = `${Math.random() * 3}s`;
+                
+                container.appendChild(confetti);
+                
+                // Remover após a animação
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Aceitar restaurante
+        function acceptRestaurant() {
+            spinBtn.style.display = 'none';
+            acceptBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+            
+            // Mostrar mensagem de sucesso
+            const successMessage = document.createElement('div');
+            successMessage.style.textAlign = 'center';
+            successMessage.style.marginTop = '2rem';
+            successMessage.style.fontSize = '1.2rem';
+            successMessage.style.fontWeight = '500';
+            successMessage.style.color = '#4CAF50';
+            successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Ótima escolha! Prepare-se para um jantar romântico no ${currentRestaurant.name}!`;
+            
+            const buttonContainer = document.querySelector('.button-container');
+            buttonContainer.innerHTML = '';
+            buttonContainer.appendChild(successMessage);
+            
+            // Botão para ver no google maps
+            const mapButton = document.createElement('a');
+            mapButton.href = currentRestaurant.url;
+            mapButton.target = '_blank';
+            mapButton.className = 'button button-primary';
+            mapButton.style.marginTop = '1rem';
+            mapButton.innerHTML = '<i class="fas fa-map-marker-alt"></i> Ver no Google Maps';
+            
+            buttonContainer.appendChild(mapButton);
+            
+            // Criar confetes
+            createConfetti();
+        }
+        
+        // Rejeitar restaurante e girar novamente
+        function rejectRestaurant() {
+            acceptBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+            spinBtn.style.display = 'flex';
+            resultContainer.classList.remove('show');
+        }
+        
+        // Inicializar a aplicação
+        function init() {
+            initWheel();
+            updateSpinsCounter();
+            
+            // Event listeners
+            spinBtn.addEventListener('click', spinWheel);
+            acceptBtn.addEventListener('click', acceptRestaurant);
+            rejectBtn.addEventListener('click', rejectRestaurant);
+        }
+        
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
